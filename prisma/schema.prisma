@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  id       String     @id @default(cuid())
+  email    String     @unique
+  name     String?
+  posts    Post[]
+  upvoted  Upvote[]
+  Downvote Downvote[]
+}
+
+model Upvote {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+}
+
+model Downvote {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+}
+
+model Post {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  title     String
+  published Boolean    @default(false)
+  author    User       @relation(fields: [authorId], references: [id])
+  authorId  String
+  upvotes   Upvote[]
+  Downvote  Downvote[]
+}
