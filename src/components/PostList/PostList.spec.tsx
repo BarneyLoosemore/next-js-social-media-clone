@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import React from "react";
+import { render, screen } from "@testing-library/react";
 
-import { PostList } from './PostList'
+import { PostList } from "./PostList";
 
-describe('<PostList />', () => {
-  it('renders', () => {
-    render(<PostList>test</PostList>)
-  })
-})
+describe("<PostList />", () => {
+  it("renders", () => {
+    render(<PostList>test</PostList>);
+  });
+});
