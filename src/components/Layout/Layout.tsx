@@ -23,7 +23,7 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
         <ul className="flex w-full flex-row justify-evenly  bg-slate-800 px-5">
           <NavLink href="/">Home</NavLink>
           <NavLink href="/posts">Posts</NavLink>
-          <NavLink href="/signup">Sign up</NavLink>
+          <NavLink href="/sign-up">Sign up</NavLink>
         </ul>
       </nav>
       <main>{children}</main>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { FormEvent, InputHTMLAttributes, useState } from "react";
 import { trpc } from "utils/trpc";
 
@@ -18,26 +19,29 @@ const Input: React.FC<InputProps> = ({
   validationErrors,
   ...rest
 }) => (
-  <>
-    <label htmlFor={name}>{label}</label>
+  <div className="relative my-3">
     <input
       id={name}
       name={name}
       {...rest}
-      className={`
-        mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-slate-400  shadow-sm focus:outline-none focus:ring-4 focus:ring-sky-600
-        ${
-          validationErrors?.[name] &&
-          "border-b-4 border-pink-600 valid:border valid:border-slate-300"
-        }
-      `}
+      className={`peer mt-1  w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-transparent focus:outline-none focus:ring-4 focus:ring-sky-600 ${
+        validationErrors?.[name]
+          ? "border-b-4 border-pink-500 valid:border valid:border-slate-300"
+          : ""
+      }`}
       required
-      autoFocus
     />
-    {validationErrors?.[name] && (
-      <p className="mt-2 text-sm text-pink-600">{validationErrors[name]}</p>
-    )}
-  </>
+    <label
+      htmlFor={name}
+      className="peer-focus:text-slae-500 absolute left-1 -top-5 text-sm text-slate-400 transition-all hover:cursor-text peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-lg peer-placeholder-shown:leading-8 peer-focus:left-1 peer-focus:-top-5 peer-focus:text-sm peer-focus:text-white">
+      {label}
+    </label>
+    {validationErrors?.[name] ? (
+      <p className="mt-1 ml-1 h-4 text-sm text-pink-500 peer-valid:hidden">
+        {validationErrors[name]}
+      </p>
+    ) : null}
+  </div>
 );
 
 export const SignUpForm = () => {
@@ -79,15 +83,17 @@ export const SignUpForm = () => {
         name: formElement.username.value,
         password: formElement.password.value,
       };
-
       await createUser(formData);
     }
   };
 
   return (
-    <div className="bg-slate-600 p-5">
+    <div className="flex flex-col items-center p-5 md:mt-24">
+      <h1 className=" mt-8 max-w-md text-center text-3xl font-extrabold text-white md:text-4xl">
+        Join The Fastest Growing Community
+      </h1>
       <form
-        className="m-10 flex flex-col outline-4 outline-black"
+        className="my-6 flex w-full max-w-sm flex-col outline-4 outline-black"
         onSubmit={handleSubmit}
         onInvalidCapture={handleValidationErrors}
         noValidate>
@@ -95,8 +101,10 @@ export const SignUpForm = () => {
           name="username"
           label="Username"
           type="text"
-          placeholder="Saul Goodman"
+          placeholder="Username"
           validationErrors={validationErrors}
+          minLength={3}
+          maxLength={15}
         />
         <Input
           name="password"
@@ -104,11 +112,24 @@ export const SignUpForm = () => {
           type="password"
           placeholder="******"
           validationErrors={validationErrors}
+          minLength={3}
+          maxLength={15}
         />
+        <button
+          aria-label="Sign Up"
+          type="submit"
+          className="my-6 rounded-lg bg-sky-600 py-3">
+          <p className="text-md font-bold text-white">Sign Up</p>
+        </button>
+        <p className="text-center text-sm font-bold text-white [&>a]:text-sky-500 [&>a]:hover:underline">
+          Already have an account?&nbsp;
+          <Link href="/login">Log-in</Link>
+        </p>
         {submissionError && (
-          <p className="mt-2 text-sm text-pink-600">{submissionError}</p>
+          <p className="mt-4 text-center text-xl font-bold text-pink-500">
+            {submissionError}
+          </p>
         )}
-        <button type="submit">Submit</button>
       </form>
     </div>
   );
