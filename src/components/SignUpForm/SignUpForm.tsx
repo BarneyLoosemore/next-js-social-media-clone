@@ -118,8 +118,8 @@ export const SignUpForm = () => {
         <button
           aria-label="Sign Up"
           type="submit"
-          className="my-6 rounded-lg bg-sky-600 py-3">
-          <p className="text-md font-bold text-white">Sign Up</p>
+          className=" my-6 rounded-md border-2  border-transparent bg-sky-600 py-2 text-white transition-all hover:border-sky-600 hover:bg-transparent hover:text-sky-600">
+          <p className="text-md font-bold ">Sign Up</p>
         </button>
         <p className="text-center text-sm font-bold text-white [&>a]:text-sky-500 [&>a]:hover:underline">
           Already have an account?&nbsp;

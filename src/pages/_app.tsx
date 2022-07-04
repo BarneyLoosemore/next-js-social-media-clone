@@ -1,9 +1,7 @@
 import { withTRPC } from "@trpc/next";
 import type { AppType } from "next/dist/shared/lib/utils";
-
 import "styles/globals.css";
 import { Layout } from "components/Layout";
-
 import { AppRouter } from "backend/router";
 
 const App: AppType = ({ Component, pageProps }) => {

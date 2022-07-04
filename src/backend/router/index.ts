@@ -1,5 +1,4 @@
 import * as trpc from "@trpc/server";
-
 import { postsRouter } from "./posts";
 import { usersRouter } from "./users";
 
