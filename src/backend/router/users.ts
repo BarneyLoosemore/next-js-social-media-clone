@@ -17,7 +17,7 @@ export const usersRouter = trpc
     },
   })
   .query("getUser", {
-    input: z.number(),
+    input: z.string(),
     async resolve(req) {
       return await prisma.user.findUnique({ where: { id: req.input } });
     },

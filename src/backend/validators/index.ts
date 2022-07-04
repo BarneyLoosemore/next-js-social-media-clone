@@ -9,5 +9,5 @@ export const postValidator = z.object({
   createdAt: z.string(),
   title: z.string(),
   published: z.boolean(),
-  authorId: z.number(),
+  authorId: z.string(),
 });

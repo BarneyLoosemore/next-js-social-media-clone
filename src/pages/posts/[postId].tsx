@@ -7,10 +7,7 @@ const Posts: NextPage = () => {
     query: { postId },
   } = useRouter();
 
-  const { data, error, isLoading } = trpc.useQuery([
-    "getPost",
-    postId as string,
-  ]);
+  const { data, error, isLoading } = trpc.useQuery(["getPost", String(postId)]);
 
   if (error) {
     return <p className="text-red-500">Error!</p>;
@@ -24,7 +21,7 @@ const Posts: NextPage = () => {
     return <p>404: post not found!</p>;
   }
 
-  return <p>{data?.title}</p>;
+  return <p>{data?.post?.title}</p>;
 };
 
 export default Posts;

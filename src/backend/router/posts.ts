@@ -18,7 +18,7 @@ export const postsRouter = trpc
     },
   })
   .query("getPost", {
-    input: z.number(),
+    input: z.string(),
     async resolve(req) {
       const post = await prisma.post.findUnique({ where: { id: req.input } });
       return { post };

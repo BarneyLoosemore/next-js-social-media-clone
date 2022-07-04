@@ -1,48 +1,11 @@
 import Link from "next/link";
-import React, { FormEvent, InputHTMLAttributes, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { trpc } from "utils/trpc";
+import { Input } from "components/Input";
 
 type ValidationErrors = {
-  username?: string;
-  password?: string;
+  [key: string]: string;
 } | null;
-
-type InputProps = {
-  name: "username" | "password";
-  label: string;
-  validationErrors: ValidationErrors;
-} & InputHTMLAttributes<any>;
-
-const Input: React.FC<InputProps> = ({
-  name,
-  label,
-  validationErrors,
-  ...rest
-}) => (
-  <div className="relative my-3">
-    <input
-      id={name}
-      name={name}
-      {...rest}
-      className={`peer mt-1  w-full rounded-md border border-slate-300 bg-white px-3 py-2 placeholder-transparent focus:outline-none focus:ring-4 focus:ring-sky-600 ${
-        validationErrors?.[name]
-          ? "border-b-4 border-pink-500 valid:border valid:border-slate-300"
-          : ""
-      }`}
-      required
-    />
-    <label
-      htmlFor={name}
-      className="peer-focus:text-slae-500 absolute left-1 -top-5 text-sm text-slate-400 transition-all hover:cursor-text peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-lg peer-placeholder-shown:leading-8 peer-focus:left-1 peer-focus:-top-5 peer-focus:text-sm peer-focus:text-white">
-      {label}
-    </label>
-    {validationErrors?.[name] ? (
-      <p className="mt-1 ml-1 h-4 text-sm text-pink-500 peer-valid:hidden">
-        {validationErrors[name]}
-      </p>
-    ) : null}
-  </div>
-);
 
 export const SignUpForm = () => {
   const [validationErrors, setValidationErrors] =
@@ -103,6 +66,7 @@ export const SignUpForm = () => {
           type="text"
           placeholder="Username"
           validationErrors={validationErrors}
+          required
           minLength={3}
           maxLength={15}
         />
@@ -112,6 +76,7 @@ export const SignUpForm = () => {
           type="password"
           placeholder="******"
           validationErrors={validationErrors}
+          required
           minLength={3}
           maxLength={15}
         />

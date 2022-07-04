@@ -10,39 +10,78 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
+// User & authentication models - based on next-auth recommendations: https://next-auth.js.org/adapters/models
 model User {
-  id       Int     @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  name     String @unique
-  password String 
-  posts    Post[]
-  upvoted  Upvote[]
-  Downvote Downvote[]
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  name      String     @unique
+  password  String
+  posts     Post[]
+  upvoted   Upvote[]
+  Downvote  Downvote[]
+  sessions  Session[]
+  accounts  Account[]
 }
 
-model Upvote {
-  id     Int @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
-  post   Post   @relation(fields: [postId], references: [id])
-  postId Int
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
-model Downvote {
-  id     Int @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
-  post   Post   @relation(fields: [postId], references: [id])
-  postId Int
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  expires      DateTime
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String?
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Content models
 model Post {
-  id        Int     @id @default(autoincrement())
+  id        String     @id @default(cuid())
   createdAt DateTime   @default(now())
   title     String
   published Boolean    @default(false)
   author    User       @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   upvotes   Upvote[]
   Downvote  Downvote[]
+}
+
+model Upvote {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+}
+
+model Downvote {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
 }
