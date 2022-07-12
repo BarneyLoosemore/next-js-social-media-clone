@@ -1,7 +1,7 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { userValidator } from "backend/validators";
-import { prisma } from "../../db/client";
+import prisma from "../../db/client";
 import { hash } from "bcryptjs";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
@@ -29,13 +29,14 @@ export const usersRouter = trpc
       const data = { ...req.input, password: hashedPassword };
 
       try {
-        await prisma.user.create({ data });
+        const user = await prisma.user.create({ data });
+        return { user, userAlreadyExistsError: false };
       } catch (e) {
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === "P2002") {
-            return { userAlreadyExistsError: true };
+            return { user: null, userAlreadyExistsError: true };
           }
-        }
+        } else throw e;
       }
     },
   });

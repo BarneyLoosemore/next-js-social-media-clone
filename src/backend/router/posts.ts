@@ -1,7 +1,7 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { postValidator } from "backend/validators";
-import { prisma } from "../../db/client";
+import prisma from "../../db/client";
 
 export const postsRouter = trpc
   .router()
