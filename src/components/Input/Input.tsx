@@ -1,7 +1,7 @@
 import React, { InputHTMLAttributes } from "react";
 
 type InputProps = {
-  name: "username" | "password";
+  name: "username" | "email" | "password" | "postText" | "postImage";
   label: string;
   validationErrors: {
     [key: string]: string;
@@ -27,7 +27,7 @@ export const Input: React.FC<InputProps> = ({
     />
     <label
       htmlFor={name}
-      className="peer-focus:text-slae-500 absolute left-1 -top-5 text-sm text-slate-400 transition-all hover:cursor-text peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-lg peer-placeholder-shown:leading-8 peer-focus:left-1 peer-focus:-top-5 peer-focus:text-sm peer-focus:text-white">
+      className="absolute left-1 -top-5 text-sm text-slate-400 transition-all hover:cursor-text peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-lg peer-placeholder-shown:leading-8 peer-focus:left-1 peer-focus:-top-5 peer-focus:text-sm peer-focus:text-white">
       {label}
     </label>
     {validationErrors?.[name] ? (
