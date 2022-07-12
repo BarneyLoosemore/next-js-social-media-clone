@@ -22,12 +22,11 @@ export const SignUpForm = () => {
         return setSubmissionError("User already exists");
       }
       if (res?.user) {
-        console.log(res.user);
         const loginCredentials = {
           email: res?.user?.email,
           password: res?.user?.password,
         };
-        signIn("credentials-login", {
+        signIn("sign-up-login", {
           ...loginCredentials,
           callbackUrl: "/",
         });

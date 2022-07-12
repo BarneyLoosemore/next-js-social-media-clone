@@ -59,7 +59,10 @@ export default NextAuth({
             throw new Error("Invalid email");
           }
 
-          const isValidPassword = credentials?.password === maybeUser.password;
+          const isValidPassword = verifyPassword(
+            credentials?.password!,
+            maybeUser.password!
+          );
 
           if (!isValidPassword) {
             throw new Error("Invalid password");
@@ -69,6 +72,45 @@ export default NextAuth({
             id: maybeUser.id,
             email: maybeUser.email,
             name: maybeUser.name,
+          };
+        } catch (error) {
+          console.warn(error);
+          throw error;
+        }
+      },
+    }),
+    CredentialsProvider({
+      id: "sign-up-login",
+      name: "Login After Sign-Up",
+      credentials: {
+        email: {
+          label: "Email Address",
+          type: "email",
+          placeholder: "john.doe@example.com",
+        },
+      },
+      async authorize(credentials) {
+        try {
+          const user = await prisma.user.findFirst({
+            where: {
+              email: credentials?.email,
+            },
+            select: {
+              id: true,
+              email: true,
+              password: true,
+              name: true,
+            },
+          });
+
+          if (!user) {
+            throw new Error("Error fetching user");
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
           };
         } catch (error) {
           console.warn(error);
