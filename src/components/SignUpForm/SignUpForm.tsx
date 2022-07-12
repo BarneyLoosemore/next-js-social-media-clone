@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { FormEvent, useState } from "react";
 import { trpc } from "utils/trpc";
 import { Input } from "components/Input";
+import { signIn } from "next-auth/react";
 
 type ValidationErrors = {
   [key: string]: string;
@@ -13,11 +14,23 @@ export const SignUpForm = () => {
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const { mutate: createUser } = trpc.useMutation(["createUser"], {
     onError: (error) => {
+      setSubmissionError(error.message);
       console.warn(error);
     },
-    onSettled: (res) => {
+    onSuccess: (res) => {
       if (res?.userAlreadyExistsError) {
-        setSubmissionError("User already exists");
+        return setSubmissionError("User already exists");
+      }
+      if (res?.user) {
+        console.log(res.user);
+        const loginCredentials = {
+          email: res?.user?.email,
+          password: res?.user?.password,
+        };
+        signIn("credentials-login", {
+          ...loginCredentials,
+          callbackUrl: "/",
+        });
       }
     },
   });
@@ -43,7 +56,7 @@ export const SignUpForm = () => {
     setValidationErrors(null);
     if (formElement.checkValidity()) {
       const formData = {
-        name: formElement.username.value,
+        email: formElement.email.value,
         password: formElement.password.value,
       };
       await createUser(formData);
@@ -61,14 +74,14 @@ export const SignUpForm = () => {
         onInvalidCapture={handleValidationErrors}
         noValidate>
         <Input
-          name="username"
-          label="Username"
-          type="text"
-          placeholder="Username"
+          name="email"
+          label="Email"
+          type="email"
+          placeholder="email@email.comn"
           validationErrors={validationErrors}
           required
           minLength={3}
-          maxLength={15}
+          maxLength={30}
         />
         <Input
           name="password"
@@ -78,17 +91,17 @@ export const SignUpForm = () => {
           validationErrors={validationErrors}
           required
           minLength={3}
-          maxLength={15}
+          maxLength={30}
         />
         <button
           aria-label="Sign Up"
           type="submit"
-          className=" my-6 rounded-md border-2  border-transparent bg-sky-600 py-2 text-white transition-all hover:border-sky-600 hover:bg-transparent hover:text-sky-600">
+          className="my-6 rounded-md border-2 border-transparent  bg-sky-600 py-2 text-white transition-all hover:border-sky-600 hover:bg-transparent hover:text-sky-600 disabled:text-black">
           <p className="text-md font-bold ">Sign Up</p>
         </button>
         <p className="text-center text-sm font-bold text-white [&>a]:text-sky-500 [&>a]:hover:underline">
           Already have an account?&nbsp;
-          <Link href="/login">Log-in</Link>
+          <Link href="/sign-in">Log-in</Link>
         </p>
         {submissionError && (
           <p className="mt-4 text-center text-xl font-bold text-pink-500">

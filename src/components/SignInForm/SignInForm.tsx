@@ -75,7 +75,7 @@ export const SignInForm = () => {
           validationErrors={validationErrors}
           required
           minLength={3}
-          maxLength={15}
+          maxLength={30}
         />
         <Input
           name="password"
@@ -85,7 +85,7 @@ export const SignInForm = () => {
           validationErrors={validationErrors}
           required
           minLength={3}
-          maxLength={15}
+          maxLength={30}
         />
         <button
           disabled={isSubmitting}

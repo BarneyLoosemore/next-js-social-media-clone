@@ -5,27 +5,30 @@ const prisma = new PrismaClient();
 async function main() {
   const encryptedPassword = await hash("password1234", 12);
   await prisma.user.upsert({
-    where: { name: "Anna" },
+    where: { email: "a@a.com" },
     update: {},
     create: {
+      email: "a@a.com",
       name: "Anna",
       password: encryptedPassword,
     },
   });
 
   await prisma.user.upsert({
-    where: { name: "Bob" },
+    where: { email: "b@b.com" },
     update: {},
     create: {
+      email: "b@b.com",
       name: "Bob",
       password: encryptedPassword,
     },
   });
 
   await prisma.user.upsert({
-    where: { name: "Carl" },
+    where: { email: "c@c.om" },
     update: {},
     create: {
+      email: "c@c.om",
       name: "Carl",
       password: encryptedPassword,
     },
