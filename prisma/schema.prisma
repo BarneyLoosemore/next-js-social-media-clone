@@ -12,15 +12,18 @@ datasource db {
 
 // User & authentication models - based on next-auth recommendations: https://next-auth.js.org/adapters/models
 model User {
-  id        String     @id @default(cuid())
-  createdAt DateTime   @default(now())
-  name      String     @unique
-  password  String
-  posts     Post[]
-  upvoted   Upvote[]
-  Downvote  Downvote[]
-  sessions  Session[]
-  accounts  Account[]
+  id            String     @id @default(cuid())
+  createdAt     DateTime   @default(now())
+  name          String?
+  password      String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  posts         Post[]
+  upvoted       Upvote[]
+  Downvote      Downvote[]
 }
 
 model Account {

@@ -1,16 +1,19 @@
+import { SessionProvider } from "next-auth/react";
 import { withTRPC } from "@trpc/next";
-import type { AppType } from "next/dist/shared/lib/utils";
-import "styles/globals.css";
 import { Layout } from "components/Layout";
 import { AppRouter } from "backend/router";
+import { AppProps } from "next/app";
+import "styles/globals.css";
 
-const App: AppType = ({ Component, pageProps }) => {
+function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <SessionProvider session={session}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </SessionProvider>
   );
-};
+}
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {
