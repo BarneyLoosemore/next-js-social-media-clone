@@ -8,6 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { trpc } from "utils/trpc";
 
 // 4mb
 const IMAGE_UPLOAD_LIMIT = 4194304;
@@ -23,6 +24,7 @@ export const CreatePostForm: React.FC = () => {
   const [validationErrors, setValidationErrors] =
     useState<ValidationErrors>(null);
   const [successText, setSuccessText] = useState<string | null>(null);
+  const utils = trpc.useContext();
 
   const handleValidationErrors = (event: FormEvent) => {
     const inputElement = event.target as HTMLInputElement;
@@ -70,10 +72,14 @@ export const CreatePostForm: React.FC = () => {
         return setSubmissionError("Error uploading post :(");
       }
 
+      // Clear the form on success
       setSubmissionError(null);
       setPreviewImageFile(null);
       formElement.reset();
       setSuccessText("Successfully uploaded post!");
+
+      // Invalidate the posts query, so new post is immediately visible
+      utils.invalidateQueries(["getAllPosts"]);
     }
   };
 
@@ -90,6 +96,7 @@ export const CreatePostForm: React.FC = () => {
           previewImageFile={previewImageFile}
           setPreviewImageFile={setPreviewImageFile}
         />
+        {/* TODO: handle `submitting` loading state here and elsewhere */}
         <button
           aria-label="Sign Up"
           type="submit"
@@ -171,7 +178,7 @@ const FileInput = ({
   return (
     <>
       <label htmlFor="postImage" className="pl-1 pb-1 text-sm text-white">
-        Upload file
+        Upload image
       </label>
       <div className="flex justify-evenly rounded-md  border border-gray-700 bg-gray-800 px-6 py-6">
         {previewImageFile && (
@@ -203,7 +210,7 @@ const FileInput = ({
           type="file"
           accept="image/*"
           onChange={handleUpload}
-          className={`w-[140px] text-transparent file:rounded-md file:border-none file:bg-white file:px-6 file:py-2 file:text-lg file:font-medium file:text-black file:transition-all file:hover:cursor-pointer file:hover:opacity-70 md:w-[125px] md:file:py-1 md:file:px-4 ${
+          className={`w-[140px] text-transparent file:rounded-md file:border-none file:bg-white file:px-6 file:py-2 file:text-lg file:text-black file:transition-all file:hover:cursor-pointer file:hover:opacity-70 md:w-[125px] md:file:py-1 md:file:px-4 ${
             previewImageFile && "hidden"
           }`}
         />

@@ -7,8 +7,12 @@ export const postsRouter = trpc
   .query("getAllPosts", {
     async resolve() {
       const posts = await prisma.post.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
         include: {
           author: true,
+          image: true,
         },
       });
       return {

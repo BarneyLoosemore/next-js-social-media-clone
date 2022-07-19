@@ -6,7 +6,7 @@ const Posts: NextPage = () => {
   return (
     <div>
       <CreatePostForm />
-      {/* <PostList /> */}
+      <PostList />
     </div>
   );
 };
