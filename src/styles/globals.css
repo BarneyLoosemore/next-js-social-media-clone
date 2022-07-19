@@ -9,4 +9,7 @@
   main {
     min-height: 100vh;
   }
+  div[aria-hidden="true"] {
+    display: none;
+  }
 }

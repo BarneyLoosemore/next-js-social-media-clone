@@ -84,7 +84,7 @@ export const CreatePostForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-5">
+    <div className="flex flex-col items-center ">
       <form
         encType="multipart/form-data"
         className="my-6 flex w-full max-w-sm flex-col outline-4 outline-black"

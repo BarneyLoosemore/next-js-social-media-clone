@@ -27,6 +27,7 @@
     "next": "^12.2.0",
     "next-auth": "^4.3.4",
     "react": "18.2.0",
+    "react-a11y-dialog": "^6.1.5",
     "react-dom": "18.2.0",
     "react-query": "^3.39.1",
     "zod": "^3.17.3"
