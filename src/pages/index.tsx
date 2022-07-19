@@ -1,7 +1,14 @@
 import type { NextPage } from "next";
+import { PostList } from "components/PostList";
+import { CreatePostForm } from "components/CreatePostForm";
 
-const Home: NextPage = () => {
-  return <h1>Home</h1>;
+const Posts: NextPage = () => {
+  return (
+    <div>
+      <CreatePostForm />
+      {/* <PostList /> */}
+    </div>
+  );
 };
 
-export default Home;
+export default Posts;
