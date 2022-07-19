@@ -65,12 +65,21 @@ model VerificationToken {
 model Post {
   id        String     @id @default(cuid())
   createdAt DateTime   @default(now())
-  title     String
-  published Boolean    @default(false)
+  text      String
+  image     Image?
   author    User       @relation(fields: [authorId], references: [id])
   authorId  String
   upvotes   Upvote[]
   Downvote  Downvote[]
+}
+
+model Image {
+  id       String @id @default(cuid())
+  publicId String @unique
+  version  String
+  format   String
+  post     Post   @relation(fields: [postId], references: [id])
+  postId   String @unique
 }
 
 model Upvote {
