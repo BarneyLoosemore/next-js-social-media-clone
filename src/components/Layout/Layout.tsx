@@ -7,25 +7,52 @@ import { CreatePostForm } from "components/CreatePostForm";
 
 export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { status } = useSession();
+  const dialog = useRef<A11yDialog>();
+
+  // Support system preference for dark mode
+  useEffect(() => {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    document.documentElement.classList.toggle("dark");
+    localStorage.theme = document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  };
 
   return (
     <>
       <Head>
         <title>Next-JS Social Media Clone</title>
       </Head>
+      <nav className="px-6 lg:px-56">
+        <ul className="flex w-full flex-row justify-evenly border-b-2 border-black ">
+          <NavLink href="/">Posts</NavLink>
           <button type="button" onClick={() => dialog.current?.show()}>
             Add post!
           </button>
           {status === "authenticated" ? (
             <button
               onClick={async () => await signOut()}
-              className="p-6 font-extrabold text-slate-200 transition-colors hover:cursor-pointer hover:text-slate-500">
+              className="p-6 text-black transition-colors hover:cursor-pointer hover:text-slate-700">
               Sign out
             </button>
           ) : (
             <NavLink href="/sign-in">Sign In</NavLink>
           )}
         </ul>
+        <button onClick={toggleDarkMode}>
+          <p>Toggle dark mode</p>
+        </button>
       </nav>
       <main className="px-6 lg:px-56">{children}</main>
       <footer>Footer</footer>

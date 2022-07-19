@@ -19,7 +19,7 @@ export const PostList = () => {
 
   return (
     <section aria-label="posts">
-      <ul className="my-20 grid grid-cols-2 gap-6 lg:grid-cols-4">
+      <ul className="my-20 grid grid-cols-1 gap-6 lg:grid-cols-3">
         {posts.length > 0
           ? posts.map((post) => <Post key={post.id} {...post} />)
           : "No posts :("}
@@ -32,7 +32,7 @@ type PostType = InferQueryOutput<"getAllPosts">["posts"][number];
 
 const Post = ({ id, author, text, image, createdAt }: PostType) => {
   return (
-    <li className="list-none rounded-md bg-slate-800 p-4 text-center text-slate-100 shadow-lg transition-colors hover:cursor-pointer hover:text-slate-500">
+    <li className="aspect-square list-none rounded-md bg-slate-800 p-4 text-center text-slate-100 shadow-lg transition-colors hover:cursor-pointer hover:text-slate-500">
       <Link key={id} href={`/posts/${id}`} passHref>
         <a>
           <p>{author?.email ?? "anonymous"}</p>

@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    background: #0e1422;
+  html.dark > body {
+    background-color: #1d1d1d;
   }
+
   main {
     min-height: 100vh;
   }
+
   div[aria-hidden="true"] {
     display: none;
   }
