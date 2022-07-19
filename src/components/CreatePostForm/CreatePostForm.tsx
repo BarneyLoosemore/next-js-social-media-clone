@@ -50,15 +50,16 @@ export const CreatePostForm: React.FC = () => {
         return setSubmissionError("Please enter text and/or upload an image!");
       }
 
-      const userId = sessionData?.user?.id;
-      if (!userId) {
-        return setSubmissionError("Error fetching user data");
-      }
-
       const formData = new FormData();
       formData.append("text", postText);
       formData.append("image", postImage);
-      formData.append("authorId", userId);
+
+      // If a user is logged in, the post will be associated with their account
+      // If not, it will be an anonymous post
+      const userId = sessionData?.user?.id;
+      if (userId) {
+        formData.append("authorId", userId);
+      }
 
       const res = await fetch("/api/upload", {
         method: "POST",

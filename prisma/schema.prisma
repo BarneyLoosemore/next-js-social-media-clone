@@ -67,8 +67,8 @@ model Post {
   createdAt DateTime   @default(now())
   text      String
   image     Image?
-  author    User       @relation(fields: [authorId], references: [id])
-  authorId  String
+  author    User?       @relation(fields: [authorId], references: [id])
+  authorId  String?
   upvotes   Upvote[]
   Downvote  Downvote[]
 }
